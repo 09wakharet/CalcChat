@@ -1,0 +1,7 @@
+<resources>
+
+    <string name="app_name">Calc</string>
+    <string name="chapter">Chapter Number</string>
+    <string name="problem">Problem Number</string>
+    
+</resources>
