@@ -12,7 +12,7 @@
         CHANGE SRC TO A NEW DRAWABLE IF YOU WANT A CUSTOM PICTURE ON TOP
         -->
     <EditText
-        android:id="@+id/chapter"
+        android:id="@+id/chapter_number"
         android:inputType="number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,6 +21,16 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
         android:hint="@string/chapter" />
+    <EditText
+        android:id="@+id/section_number"
+        android:inputType="number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:hint="@string/section"/>
     <EditText
         android:id="@+id/problem_number"
         android:inputType="number"

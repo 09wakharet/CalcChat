@@ -40,11 +40,24 @@ public class ViewPage extends Activity {
 				.setView(dialogView)
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {	
-						final String chapter  = ((EditText)dialogView.findViewById(R.id.chapter)).getText().toString();
-						final String problemNumber = ((EditText)dialogView.findViewById(R.id.problem_number)).getText().toString();
-						Toast.makeText(ViewPage.this, chapter+":::"+problemNumber, Toast.LENGTH_LONG).show();
+						final String chapter  = ((EditText)dialogView.findViewById(R.id.chapter_number)).getText().toString();
+                        final String section = ((EditText)dialogView.findViewById(R.id.section_number)).getText().toString();
+						final String problem = ((EditText)dialogView.findViewById(R.id.problem_number)).getText().toString();
+
+                        System.out.println(chapter + " : " + section + " : " + problem);
+
+                        String linkChapter = ("00" + chapter);
+                        linkChapter = linkChapter.substring(linkChapter.length()-2, linkChapter.length());
+                        String linkSection = "abcdefghhijklmnopqrstuvwxyz".charAt(Integer.parseInt(section)-1) + "";
+                        String linkProblem = ("000" + problem);
+                        linkProblem = linkProblem.substring(linkProblem.length()-3, linkProblem.length());
+
+                        MY_URL_STRING = "http://c811118.r18.cf2.rackcdn.com/se" + linkChapter + linkSection + "01" + linkProblem + ".gif";
+
+                        System.out.println(MY_URL_STRING);
+						Toast.makeText(ViewPage.this, MY_URL_STRING, Toast.LENGTH_LONG).show();
 						//TODO encode the my_string_url with all this info
-						//new DownloadImageTask((ImageView) findViewById(R.id.image)).execute(MY_URL_STRING);
+						new DownloadImageTask((ImageView) findViewById(R.id.image)).execute(MY_URL_STRING);
 					}
 				})
 				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
