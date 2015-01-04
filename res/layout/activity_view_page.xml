@@ -12,11 +12,10 @@
         android:layout_gravity="right"
         android:src="@drawable/ic_action_search" />
 
-    <ImageView
-        android:id="@+id/image"
-        android:name="com.esaych.calc.ViewPageImage"
+    <android.support.v4.view.ViewPager
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="5dp" />
+        android:layout_height="match_parent" />
 
 </RelativeLayout>
