@@ -49,8 +49,10 @@ public class FragmentSlidePage extends Fragment {
         final ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.fragment_slide_page, container, false);
 
-        Bitmap doge = BitmapFactory.decodeResource(getResources(), R.drawable.doge);
-        ((ImageView)rootView.findViewById(R.id.image)).setImageBitmap(doge);
+//        Bitmap doge = BitmapFactory.decodeResource(getResources(), R.drawable.doge);
+//        ((ImageView)rootView.findViewById(R.id.image)).setImageBitmap(doge);
+
+        new DownloadImageTask((ImageView) rootView.findViewById(R.id.image)).execute(mBookLoc.getURLForPageNum(viewPage, mPageNumber));
         //TODO implement code to make this image scrollable, zoomable
 
         return rootView;
@@ -83,7 +85,8 @@ public class FragmentSlidePage extends Fragment {
             if (error.contains("connect"))
                 Toast.makeText(viewPage, "You are not connected to the internet.", Toast.LENGTH_LONG).show();
             if (!error.equals(""))
-                Toast.makeText(viewPage, "The problem you've entered does not exist.", Toast.LENGTH_LONG).show();
+                Toast.makeText(viewPage, error, Toast.LENGTH_LONG).show();
+//                Toast.makeText(viewPage, "The problem you've entered does not exist.", Toast.LENGTH_LONG).show();
             Point size = new Point();
             viewPage.getWindowManager().getDefaultDisplay().getSize(size);
             int width = size.x;

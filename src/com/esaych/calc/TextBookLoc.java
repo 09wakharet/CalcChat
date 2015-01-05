@@ -45,22 +45,10 @@ public class TextBookLoc {
         return prob;
     }
 
-    public void setNextProblem() {
-        prob = (Integer.parseInt(prob) + 2) + "";
-    }
-
-    public String setNextProblem(ViewPage viewPage) {
-        setNextProblem();
-        return getURL(viewPage);
-    }
-
-    public void setPrevProblem() {
-        prob = (Integer.parseInt(prob) - 2) + "";
-    }
-
-    public String setPrevProblem(ViewPage viewPage) {
-        setPrevProblem();
-        return getURL(viewPage);
+    public String getURLForPageNum(ViewPage viewPage, int pageNum) {
+        TextBookLoc temp = new TextBookLoc(toString());
+        temp.setProblem((Integer.parseInt(prob) + pageNum*2)+"");
+        return temp.getURL(viewPage);
     }
 
     public String getURL(ViewPage viewPage) {

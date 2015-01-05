@@ -16,7 +16,7 @@ import android.widget.ImageView;
 
 public class ViewPage extends FragmentActivity {
 
-    private static final int NUM_PAGES = 5;
+    private static int NUM_PAGES = -2;
     private ViewPager mPager;
     private ScreenSlidePagerAdapter mPagerAdapter;
 
@@ -28,16 +28,6 @@ public class ViewPage extends FragmentActivity {
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
         mPager.setAdapter(mPagerAdapter);
-        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                // When changing pages, reset the action bar actions since they are dependent
-                // on which page is currently active. An alternative approach is to have each
-                // fragment expose actions itself (rather than the activity exposing actions),
-                // but for simplicity, the activity provides the actions in this sample.
-                invalidateOptionsMenu();
-            }
-        });
 
         ((ImageView)findViewById(R.id.search)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -97,7 +87,7 @@ public class ViewPage extends FragmentActivity {
 
         @Override
         public int getCount() {
-            return NUM_PAGES;
+            return NUM_PAGES++;
         }
     }
 }
