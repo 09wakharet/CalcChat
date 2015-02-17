@@ -83,7 +83,7 @@ public class ViewPage extends FragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return FragmentSlidePage.create(position, loc, ViewPage.this);
+            return FragmentSlidePage.create(position, loc.offSet(position), ViewPage.this);
         }
 
         @Override

@@ -48,10 +48,8 @@ public class TextBookLoc {
         return prob;
     }
 
-    public String getURLForPageNum(ViewPage viewPage, int pageNum) {
-        TextBookLoc temp = new TextBookLoc(toString());
-        temp.setProblem((Integer.parseInt(prob) + pageNum*2)+"");
-        return temp.getURL(viewPage);
+    public TextBookLoc offSet(int amount) {
+        return new TextBookLoc(chpt, sect, (Integer.parseInt(prob)+amount*2)+"");
     }
 
     public String getURL(ViewPage viewPage) {
@@ -70,11 +68,11 @@ public class TextBookLoc {
     }
 
     public TextBookLoc getNextProb() {
-        return new TextBookLoc(chpt, sect, (Integer.parseInt(prob)+1)+"");
+        return new TextBookLoc(chpt, sect, (Integer.parseInt(prob)+2)+"");
     }
 
     public TextBookLoc getPrevProb() {
-        return new TextBookLoc(chpt, sect, (Integer.parseInt(prob)-1)+"");
+        return new TextBookLoc(chpt, sect, (Integer.parseInt(prob)-2)+"");
     }
 
     public String toString() {

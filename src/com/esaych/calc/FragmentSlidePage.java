@@ -62,15 +62,16 @@ public class FragmentSlidePage extends Fragment {
 
 
         //Populate the FragmentView
-        ((ImageView) rootView.findViewById(R.id.image)).setImageBitmap(ImageCache.getImage(mBookLoc));
+        ((ImageView) rootView.findViewById(R.id.image)).setImageBitmap(ImageCache.getImage(mBookLoc, this));
         //TODO implement code to make this image scrollable, zoomable
         ((TextView) rootView.findViewById(R.id.question_text)).setText("Chapter: " + mBookLoc.getChapter() + "\nSection: " + mBookLoc.getSection() + "\nProblem: " +mBookLoc.getProblem());
 
         return rootView;
     }
 
-    public static void updateImage(Bitmap image) {
-        ((ImageView)viewPage.findViewById(R.id.image)).setImageBitmap(image);
+
+    public void updateImage(Bitmap image) {
+        ((ImageView)getView().findViewById(R.id.image)).setImageBitmap(image);
     }
 
     /**

@@ -19,8 +19,8 @@ import java.util.Map;
 public class ImageCache {
     private static Map<TextBookLoc, Bitmap> cacheMap = new HashMap<TextBookLoc, Bitmap>();
 
-    public static Bitmap getImage(TextBookLoc bookLoc) {
-        stockCacheImages(bookLoc);
+    public static Bitmap getImage(TextBookLoc bookLoc, FragmentSlidePage fragment) {
+        stockCacheImages(bookLoc, fragment);
         if (cacheMap.containsKey(bookLoc))
             return cacheMap.get(bookLoc);
         DownloadImageTask.mustUpdateImage = true;
@@ -35,26 +35,28 @@ public class ImageCache {
      * Stock the images before and after bookLoc assuming they're not already cached
      * @param bookLoc
      */
-    private static void stockCacheImages(TextBookLoc bookLoc) {
+    private static void stockCacheImages(TextBookLoc bookLoc, FragmentSlidePage fragment) {
         if (!cacheMap.containsKey(bookLoc))
-            urlImage(bookLoc);
+            urlImage(bookLoc, fragment);
         if (!cacheMap.containsKey(bookLoc.getNextProb()))
-            urlImage(bookLoc.getNextProb());
+            urlImage(bookLoc.getNextProb(), null);
         if (!cacheMap.containsKey(bookLoc.getPrevProb()))
-            urlImage(bookLoc.getPrevProb());
+            urlImage(bookLoc.getPrevProb(), null);
     }
 
-    private static void urlImage(TextBookLoc bookLoc) {
-        new DownloadImageTask(bookLoc).execute(bookLoc.getURL(FragmentSlidePage.viewPage));
+    private static void urlImage(TextBookLoc bookLoc, FragmentSlidePage fragment) {
+        new DownloadImageTask(bookLoc, fragment).execute(bookLoc.getURL(FragmentSlidePage.viewPage));
     }
 
     private static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         static boolean mustUpdateImage = false;
         TextBookLoc bookLoc;
+        FragmentSlidePage fragment;
         String error = "";
 
-        public DownloadImageTask(TextBookLoc bookLoc) {
+        public DownloadImageTask(TextBookLoc bookLoc, FragmentSlidePage fragment) {
             this.bookLoc = bookLoc;
+            this.fragment = fragment;
         }
 
         protected Bitmap doInBackground(String... urls) {
@@ -67,7 +69,7 @@ public class ImageCache {
                 Log.e("Error", e.getMessage());
                 error = e.getMessage();
                 e.printStackTrace();
-                //return BitmapFactory.decodeResource(FragmentSlidePage.getResources(), R.drawable.doge); TODO: fix this line of code
+                return BitmapFactory.decodeResource(FragmentSlidePage.viewPage.getResources(), R.drawable.doge);
             }
             return download;
         }
@@ -83,8 +85,10 @@ public class ImageCache {
             int height = (int)((float)result.getHeight()*((float)width/(float)result.getWidth()));
             Bitmap bitmap = Bitmap.createScaledBitmap(result, width, height, true);
             ImageCache.setImage(bookLoc, bitmap);
-            if (mustUpdateImage)
-                FragmentSlidePage.updateImage(bitmap);
+            if (mustUpdateImage) {
+                fragment.updateImage(bitmap);
+                mustUpdateImage = false;
+            }
         }
     }
 }
