@@ -20,9 +20,11 @@ public class ImageCache {
     private static Map<TextBookLoc, Bitmap> cacheMap = new HashMap<TextBookLoc, Bitmap>();
 
     public static Bitmap getImage(TextBookLoc bookLoc) {
-        //TODO: ASYNC THE STOCK CACHE IMAGES METHOD
         stockCacheImages(bookLoc);
-        return cacheMap.get(bookLoc);
+        if (cacheMap.containsKey(bookLoc))
+            return cacheMap.get(bookLoc);
+        DownloadImageTask.mustUpdateImage = true;
+        return BitmapFactory.decodeResource(FragmentSlidePage.viewPage.getResources(), R.drawable.doge);
     }
 
     public static void setImage(TextBookLoc bookLoc, Bitmap image) {
@@ -43,10 +45,11 @@ public class ImageCache {
     }
 
     private static void urlImage(TextBookLoc bookLoc) {
-        new DownloadImageTask(bookLoc).execute();
+        new DownloadImageTask(bookLoc).execute(bookLoc.getURL(FragmentSlidePage.viewPage));
     }
 
     private static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        static boolean mustUpdateImage = false;
         TextBookLoc bookLoc;
         String error = "";
 
@@ -80,6 +83,8 @@ public class ImageCache {
             int height = (int)((float)result.getHeight()*((float)width/(float)result.getWidth()));
             Bitmap bitmap = Bitmap.createScaledBitmap(result, width, height, true);
             ImageCache.setImage(bookLoc, bitmap);
+            if (mustUpdateImage)
+                FragmentSlidePage.updateImage(bitmap);
         }
     }
 }

@@ -29,6 +29,7 @@ public class ViewPage extends FragmentActivity {
         mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
         mPager.setAdapter(mPagerAdapter);
 
+        // search glass listener
         ((ImageView)findViewById(R.id.search)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 

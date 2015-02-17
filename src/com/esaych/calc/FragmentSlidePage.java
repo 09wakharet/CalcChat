@@ -69,6 +69,10 @@ public class FragmentSlidePage extends Fragment {
         return rootView;
     }
 
+    public static void updateImage(Bitmap image) {
+        ((ImageView)viewPage.findViewById(R.id.image)).setImageBitmap(image);
+    }
+
     /**
      * Returns the page number represented by this fragment object.
      */
