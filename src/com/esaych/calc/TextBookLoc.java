@@ -1,7 +1,10 @@
 package com.esaych.calc;
 
 import android.widget.Toast;
-
+/**
+ * Created by Samuel Holmberg on 2/17/2015.
+ * This class is designed to be the basic location object of problems in the text book based on chapter, section and problem
+ */
 public class TextBookLoc {
 
     private String chpt;
@@ -66,8 +69,27 @@ public class TextBookLoc {
         }
     }
 
+    public TextBookLoc getNextProb() {
+        return new TextBookLoc(chpt, sect, (Integer.parseInt(prob)+1)+"");
+    }
+
+    public TextBookLoc getPrevProb() {
+        return new TextBookLoc(chpt, sect, (Integer.parseInt(prob)-1)+"");
+    }
+
     public String toString() {
         return chpt + ";" + sect + ";" + prob;
+    }
+
+    public boolean equals(Object o) {
+        if (!(o instanceof TextBookLoc))
+            return false;
+        TextBookLoc loc = ((TextBookLoc) o);
+        if (loc.getProblem().equals(prob))
+            if (loc.getSection().equals(sect))
+                if (loc.getChapter().equals(chpt))
+                    return true;
+        return false;
     }
 
 }

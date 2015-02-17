@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.InputStream;
@@ -20,8 +21,16 @@ public class FragmentSlidePage extends Fragment {
     public static final String ARG_PAGENUM = "page";
     private int mPageNumber;
     private TextBookLoc mBookLoc;
-    private static ViewPage viewPage;
+    public static ViewPage viewPage;
 
+    /**
+     * Called when getting a FragmentSlidePage to populate the FragmentView ViewPage
+     *
+     * @param pageNum   page number of this specific fragmentslider, usually within reasonablly small, can be negative.
+     * @param bookLoc   book location this page represents
+     * @param vp
+     * @return  new FragmentSlidePage which can identify with the data previously added
+     */
     public static FragmentSlidePage create(int pageNum, TextBookLoc bookLoc, ViewPage vp) {
         FragmentSlidePage fragment = new FragmentSlidePage();
         Bundle args = new Bundle();
@@ -43,8 +52,7 @@ public class FragmentSlidePage extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.fragment_slide_page, container, false);
@@ -52,48 +60,13 @@ public class FragmentSlidePage extends Fragment {
 //        Bitmap doge = BitmapFactory.decodeResource(getResources(), R.drawable.doge);
 //        ((ImageView)rootView.findViewById(R.id.image)).setImageBitmap(doge);
 
-        new DownloadImageTask((ImageView) rootView.findViewById(R.id.image)).execute(mBookLoc.getURLForPageNum(viewPage, mPageNumber));
+
+        //Populate the FragmentView
+        ((ImageView) rootView.findViewById(R.id.image)).setImageBitmap(ImageCache.getImage(mBookLoc));
         //TODO implement code to make this image scrollable, zoomable
+        ((TextView) rootView.findViewById(R.id.question_text)).setText("Chapter: " + mBookLoc.getChapter() + "\nSection: " + mBookLoc.getSection() + "\nProblem: " +mBookLoc.getProblem());
 
         return rootView;
-    }
-
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-        String error = "";
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                error = e.getMessage();
-                e.printStackTrace();
-                return BitmapFactory.decodeResource(getResources(), R.drawable.doge);
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            if (error.contains("connect"))
-                Toast.makeText(viewPage, "You are not connected to the internet.", Toast.LENGTH_LONG).show();
-            if (!error.equals(""))
-                Toast.makeText(viewPage, error, Toast.LENGTH_LONG).show();
-//                Toast.makeText(viewPage, "The problem you've entered does not exist.", Toast.LENGTH_LONG).show();
-            Point size = new Point();
-            viewPage.getWindowManager().getDefaultDisplay().getSize(size);
-            int width = size.x;
-            int height = (int)((float)result.getHeight()*((float)width/(float)result.getWidth()));
-            Bitmap bitmap = Bitmap.createScaledBitmap(result, width, height, true);
-            bmImage.setImageBitmap(bitmap);
-        }
     }
 
     /**
