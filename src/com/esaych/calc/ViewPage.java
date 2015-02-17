@@ -16,7 +16,7 @@ import android.widget.ImageView;
 
 public class ViewPage extends FragmentActivity {
 
-    private static int NUM_PAGES = -2;
+    private static int NUM_PAGES = -5;
     private ViewPager mPager;
     private ScreenSlidePagerAdapter mPagerAdapter;
 
