@@ -103,15 +103,91 @@ public class ImageCache {
                 Toast.makeText(FragmentSlidePage.viewPage, "No internet connectivity", Toast.LENGTH_LONG).show();
             if (!error.equals(""))
                 Toast.makeText(FragmentSlidePage.viewPage, error, Toast.LENGTH_LONG).show();
-            Point size = new Point();
-            FragmentSlidePage.viewPage.getWindowManager().getDefaultDisplay().getSize(size);
-            int width = size.x;
-            int height = (int)((float)result.getHeight()*((float)width/(float)result.getWidth()));
-            Bitmap bitmap = Bitmap.createScaledBitmap(result, width, height, true);
+            Bitmap bitmap = cropImage(result);
             ImageCache.setImage(bookLoc, bitmap);
             if (fragment != null) {
                 fragment.updateImage(bitmap);
             }
+        }
+
+        /**
+         * Clears white space around borders for more zoomed image
+         * @param img
+         * @return
+         */
+        protected Bitmap cropImage(Bitmap img) {
+
+            int innerX=0;
+            int innerY=0;
+            int outerX=0;
+            int outerY=0;
+
+            loopinY:
+            for (int y = 0; y < img.getHeight(); y+=2) {
+                for (int x = 0; x < img.getWidth(); x+=2) {
+                    int  clr = img.getPixel(x, y);
+                    int  darkness = ((clr & 0x00ff0000) >> 16) + ((clr & 0x0000ff00) >> 8) + (clr & 0x000000ff);
+                    if (darkness < 100) {
+                        innerY = y;
+                        break loopinY;
+                    }
+                }
+            }
+
+            loopinX:
+            for (int x = 0; x < img.getWidth(); x+=2) {
+                for (int y = 0; y < img.getHeight(); y+=2) {
+                    int  clr = img.getPixel(x, y);
+                    int  darkness = ((clr & 0x00ff0000) >> 16) + ((clr & 0x0000ff00) >> 8) + (clr & 0x000000ff);
+                    if (darkness < 100) {
+                        innerX = x;
+                        break loopinX;
+                    }
+                }
+            }
+
+            loopoutY:
+            for (int y = img.getHeight()-1; y > 0; y-=2) {
+                for (int x = img.getWidth()-1; x > 0; x-=2) {
+                    int  clr = img.getPixel(x, y);
+                    int  darkness = ((clr & 0x00ff0000) >> 16) + ((clr & 0x0000ff00) >> 8) + (clr & 0x000000ff);
+                    if (darkness < 100) {
+                        outerY = y;
+                        break loopoutY;
+                    }
+                }
+            }
+
+            loopoutX:
+            for (int x = img.getWidth()-1; x > 0; x-=2) {
+                for (int y = img.getHeight()-1; y > 0; y-=2) {
+                    int  clr = img.getPixel(x, y);
+                    int  darkness = ((clr & 0x00ff0000) >> 16) + ((clr & 0x0000ff00) >> 8) + (clr & 0x000000ff);
+                    if (darkness < 100) {
+                        outerX = x;
+                        break loopoutX;
+                    }
+                }
+            }
+            
+            if (innerX > 10)
+                innerX -= 10;
+            if (innerY > 10)
+                innerY -= 10;
+            if (outerX < img.getWidth()-10)
+                outerX += 10;
+            if (outerY < img.getHeight()-10)
+                outerY += 10;
+
+            img = Bitmap.createBitmap(img, innerX, innerY, outerX, outerY);
+
+
+            Point size = new Point();
+            FragmentSlidePage.viewPage.getWindowManager().getDefaultDisplay().getSize(size);
+            int width = size.x;
+            int height = (int)((float)img.getHeight()*((float)width/(float)img.getWidth()));
+
+            return Bitmap.createScaledBitmap(img, width, height, true);
         }
     }
 }

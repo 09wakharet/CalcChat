@@ -62,7 +62,7 @@ public class TextBookLoc {
 
             return "http://c811118.r18.cf2.rackcdn.com/se" + linkChapter + linkSection + "01" + linkProblem + ".gif";
         } catch (Exception e) {
-            Toast.makeText(viewPage, "The problem you've entered does not exist.", Toast.LENGTH_LONG).show();
+//            Toast.makeText(viewPage, "The problem you've entered does not exist.", Toast.LENGTH_LONG).show();
             return "http://i.imgur.com/uZyDWjl.png"; //DOGE Thinking
         }
     }
