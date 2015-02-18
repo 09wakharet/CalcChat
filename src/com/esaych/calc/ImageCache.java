@@ -19,12 +19,24 @@ import java.util.Map;
 public class ImageCache {
     private static Map<TextBookLoc, Bitmap> cacheMap = new HashMap<TextBookLoc, Bitmap>();
 
+    /**
+     * Gets the image for the book location - will return doge if not cached yet
+     * @param bookLoc
+     * @param fragment
+     * @return
+     */
     public static Bitmap getImage(TextBookLoc bookLoc, FragmentSlidePage fragment) {
-        stockCacheImages(bookLoc, fragment);
-        if (cacheMap.containsKey(bookLoc))
+        if (cacheMap.containsKey(bookLoc)) {
+            stockCacheImages(bookLoc, null);
             return cacheMap.get(bookLoc);
-        DownloadImageTask.mustUpdateImage = true;
-        return BitmapFactory.decodeResource(FragmentSlidePage.viewPage.getResources(), R.drawable.doge);
+        } else {
+            stockCacheImages(bookLoc, fragment);
+            return BitmapFactory.decodeResource(FragmentSlidePage.viewPage.getResources(), R.drawable.doge);
+        }
+    }
+
+    public static void resetCache() {
+        cacheMap.clear();
     }
 
     public static void setImage(TextBookLoc bookLoc, Bitmap image) {
@@ -42,14 +54,26 @@ public class ImageCache {
             urlImage(bookLoc.getNextProb(), null);
         if (!cacheMap.containsKey(bookLoc.getPrevProb()))
             urlImage(bookLoc.getPrevProb(), null);
+        clearOldImages(bookLoc);
+    }
+
+    private static void clearOldImages(TextBookLoc loc) {
+        for (TextBookLoc tempLoc : cacheMap.keySet()) {
+            if (Math.abs(Integer.parseInt(tempLoc.getProblem()) - Integer.parseInt(loc.getProblem())) > 4) {//store up to 5 images, two on each side
+                cacheMap.remove(tempLoc);
+                break;
+            }
+        }
     }
 
     private static void urlImage(TextBookLoc bookLoc, FragmentSlidePage fragment) {
         new DownloadImageTask(bookLoc, fragment).execute(bookLoc.getURL(FragmentSlidePage.viewPage));
     }
 
+    /**
+     * Used for downloading and caching of image, and updating to fragment if fragment is not null
+     */
     private static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        static boolean mustUpdateImage = false;
         TextBookLoc bookLoc;
         FragmentSlidePage fragment;
         String error = "";
@@ -85,9 +109,8 @@ public class ImageCache {
             int height = (int)((float)result.getHeight()*((float)width/(float)result.getWidth()));
             Bitmap bitmap = Bitmap.createScaledBitmap(result, width, height, true);
             ImageCache.setImage(bookLoc, bitmap);
-            if (mustUpdateImage) {
+            if (fragment != null) {
                 fragment.updateImage(bitmap);
-                mustUpdateImage = false;
             }
         }
     }

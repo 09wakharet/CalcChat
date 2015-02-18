@@ -42,8 +42,10 @@ public class ViewPage extends FragmentActivity {
                                 final String chapter = ((EditText) dialogView.findViewById(R.id.chapter_number)).getText().toString();
                                 final String section = ((EditText) dialogView.findViewById(R.id.section_number)).getText().toString();
                                 final String problem = ((EditText) dialogView.findViewById(R.id.problem_number)).getText().toString();
-
+                                mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
                                 mPagerAdapter.setBookLoc(new TextBookLoc(chapter, section, problem));
+                                mPager.setAdapter(mPagerAdapter);
+                                ImageCache.resetCache();
                             }
                         })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

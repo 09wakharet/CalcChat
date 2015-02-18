@@ -15,10 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FragmentSlidePage extends Fragment {
     public static final String ARG_BOOKLOC = "bookloc";
     public static final String ARG_PAGENUM = "page";
+    public static Map<Integer, FragmentSlidePage> pages = new HashMap<Integer, FragmentSlidePage>();
     private int mPageNumber;
     private TextBookLoc mBookLoc;
     public static ViewPage viewPage;
@@ -26,7 +30,7 @@ public class FragmentSlidePage extends Fragment {
     /**
      * Called when getting a FragmentSlidePage to populate the FragmentView ViewPage
      *
-     * @param pageNum   page number of this specific fragmentslider, usually within reasonablly small, can be negative.
+     * @param pageNum   page number of this specific fragmentslider, usually within reasonably small, can be negative.
      * @param bookLoc   book location this page represents
      * @param vp
      * @return  new FragmentSlidePage which can identify with the data previously added
@@ -38,6 +42,7 @@ public class FragmentSlidePage extends Fragment {
         args.putString(ARG_BOOKLOC, bookLoc.toString());
         fragment.setArguments(args);
         viewPage = vp;
+        pages.put(pageNum, fragment);
         return fragment;
     }
 
@@ -68,7 +73,6 @@ public class FragmentSlidePage extends Fragment {
 
         return rootView;
     }
-
 
     public void updateImage(Bitmap image) {
         ((ImageView)getView().findViewById(R.id.image)).setImageBitmap(image);
