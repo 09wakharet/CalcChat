@@ -59,24 +59,20 @@ public class FragmentSlidePage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        final ViewGroup rootView = (ViewGroup) inflater
-                .inflate(R.layout.fragment_slide_page, container, false);
-
-//        Bitmap doge = BitmapFactory.decodeResource(getResources(), R.drawable.doge);
-//        ((ImageView)rootView.findViewById(R.id.image)).setImageBitmap(doge);
-
+        final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_slide_page, container, false);
 
         //Populate the FragmentView
-        ((ImageView) rootView.findViewById(R.id.image)).setImageBitmap(ImageCache.getImage(mBookLoc, this));
-        //TODO implement code to make this image scrollable, zoomable
+        ((ImageView) rootView.findViewById(R.id.image)).setImageBitmap(ImageCache.getImage(mBookLoc, this, rootView));
         ((TextView) rootView.findViewById(R.id.question_text)).setText("Chapter: " + mBookLoc.getChapter() + "\nSection: " + mBookLoc.getSection() + "\nProblem: " +mBookLoc.getProblem());
 
         return rootView;
     }
 
     public void updateImage(Bitmap image) {
-        if (getView() != null) //for rapid flicking of fingers
-            ((ImageView)getView().findViewById(R.id.image)).setImageBitmap(image);
+        if (getView() == null) //for rapid flicking of fingers
+            return;
+        ((ImageView)getView().findViewById(R.id.image)).setImageBitmap(image);
+        getView().findViewById(R.id.progress_bar).setVisibility(View.GONE);
     }
 
     /**

@@ -2,29 +2,29 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/image"
-            android:name="com.esaych.calc.ViewPageImage"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="5dp" />
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/image"
+                android:name="com.esaych.calc.ViewPageImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingTop="100dp"/>
+        </RelativeLayout>
         <TextView
             android:id="@+id/question_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal" />
-    </RelativeLayout>
 
 </ScrollView>

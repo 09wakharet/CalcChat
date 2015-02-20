@@ -1,8 +1,8 @@
 <resources>
 
     <string name="app_name">Calc</string>
-    <string name="chapter">Chapter Number</string>
-    <string name="section">Section Number</string>
-    <string name="problem">Problem Number</string>
+    <string name="chapter">Chapter</string>
+    <string name="section">Section</string>
+    <string name="problem">Problem</string>
     
 </resources>

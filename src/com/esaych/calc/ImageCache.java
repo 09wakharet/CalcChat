@@ -4,12 +4,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.AsyncTask;
+import android.support.v4.util.LruCache;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Samuel Holmberg on 2/17/2015.
@@ -17,30 +18,47 @@ import java.util.Map;
  * Also this loads the previous and next images before scroll is complete, this allows for faster, easier scrolling.
  */
 public class ImageCache {
-    private static Map<TextBookLoc, Bitmap> cacheMap = new HashMap<TextBookLoc, Bitmap>();
+    private static LruCache<TextBookLoc, Bitmap> imageCache;
 
+    public static void initCache() {
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+        final int cacheSize = maxMemory / 4;
+
+        imageCache = new LruCache<TextBookLoc, Bitmap>(cacheSize) {
+            @Override
+            protected int sizeOf(TextBookLoc key, Bitmap bitmap) {
+                // The cache size will be measured in kb - not # of items
+                return bitmap.getByteCount() / 1024;
+            }
+        };
+    }
+
+    public static void addBitmapToMemoryCache(TextBookLoc key, Bitmap bitmap) {
+        if (imageCache.get(key) == null) {
+            imageCache.put(key, bitmap);
+        }
+    }
+    
     /**
      * Gets the image for the book location - will return doge if not cached yet
      * @param bookLoc
      * @param fragment
      * @return
      */
-    public static Bitmap getImage(TextBookLoc bookLoc, FragmentSlidePage fragment) {
-        if (cacheMap.containsKey(bookLoc)) {
+    public static Bitmap getImage(TextBookLoc bookLoc, FragmentSlidePage fragment, ViewGroup rootView) {
+        if (imageCache.get(bookLoc) != null) {
             stockCacheImages(bookLoc, null);
-            return cacheMap.get(bookLoc);
+            rootView.findViewById(R.id.progress_bar).setVisibility(View.GONE); //TODO: Make progress spinner work properly
+            return imageCache.get(bookLoc);
         } else {
             stockCacheImages(bookLoc, fragment);
+            rootView.findViewById(R.id.progress_bar).setVisibility(View.VISIBLE);
             return BitmapFactory.decodeResource(FragmentSlidePage.viewPage.getResources(), R.drawable.doge);
         }
     }
 
     public static void resetCache() {
-        cacheMap.clear();
-    }
-
-    public static void setImage(TextBookLoc bookLoc, Bitmap image) {
-        cacheMap.put(bookLoc, image);
+        imageCache.evictAll();
     }
 
     /**
@@ -48,22 +66,12 @@ public class ImageCache {
      * @param bookLoc
      */
     private static void stockCacheImages(TextBookLoc bookLoc, FragmentSlidePage fragment) {
-        if (!cacheMap.containsKey(bookLoc))
+        if (imageCache.get(bookLoc) == null)
             urlImage(bookLoc, fragment);
-        if (!cacheMap.containsKey(bookLoc.getNextProb()))
+        if (imageCache.get(bookLoc.getNextProb()) == null)
             urlImage(bookLoc.getNextProb(), null);
-        if (!cacheMap.containsKey(bookLoc.getPrevProb()))
+        if (imageCache.get(bookLoc.getPrevProb()) == null)
             urlImage(bookLoc.getPrevProb(), null);
-        clearOldImages(bookLoc);
-    }
-
-    private static void clearOldImages(TextBookLoc loc) {
-        for (TextBookLoc tempLoc : cacheMap.keySet()) {
-            if (Math.abs(tempLoc.getProblem() - loc.getProblem()) > 1) {//distance equation - store up to 3 images, one on each side
-                cacheMap.remove(tempLoc);
-                break;
-            }
-        }
     }
 
     private static void urlImage(TextBookLoc bookLoc, FragmentSlidePage fragment) {
@@ -104,7 +112,7 @@ public class ImageCache {
             if (!error.equals(""))
                 Toast.makeText(FragmentSlidePage.viewPage, error, Toast.LENGTH_LONG).show();
             Bitmap bitmap = cropImage(result);
-            ImageCache.setImage(bookLoc, bitmap);
+            ImageCache.addBitmapToMemoryCache(bookLoc, bitmap);
             if (fragment != null) {
                 fragment.updateImage(bitmap);
             }

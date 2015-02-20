@@ -58,7 +58,6 @@ public class ViewPage extends FragmentActivity {
                 probNP.setWrapSelectorWheel(false);
 
                 (new AlertDialog.Builder(ViewPage.this))
-                        .setTitle("Get New Problem")
                         .setView(dialogView)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -80,6 +79,8 @@ public class ViewPage extends FragmentActivity {
             }//end onclick
 
         });//end search button onclicklistener
+
+        ImageCache.initCache(); //allocate mem to the image cache
 	}
 
 	@Override
