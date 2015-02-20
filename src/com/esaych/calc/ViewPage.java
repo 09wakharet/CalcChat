@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 
 public class ViewPage extends FragmentActivity {
 
@@ -34,14 +35,36 @@ public class ViewPage extends FragmentActivity {
             public void onClick(View v) {
 
                 final View dialogView = getLayoutInflater().inflate(R.layout.chooser_dialog, null);
+
+                NumberPicker chptNP = (NumberPicker) findViewById(R.id.chapter_number);
+                chptNP.setMaxValue(999);
+                chptNP.setMinValue(0);
+                chptNP.setWrapSelectorWheel(false);
+
+                NumberPicker sectNP = (NumberPicker) findViewById(R.id.section_number);
+                sectNP.setMaxValue(999);
+                sectNP.setMinValue(0);
+                sectNP.setWrapSelectorWheel(false);
+
+                NumberPicker probNP = (NumberPicker) findViewById(R.id.section_number);
+
+                String[] values=new String[10];
+                for(int i = 1 ; i < values.length ; i++) {
+                    values[i] = Integer.toString(i*2);
+                }
+                probNP.setMaxValue(values.length-1);
+                probNP.setMinValue(0);
+                probNP.setDisplayedValues(values);
+                probNP.setWrapSelectorWheel(false);
+
                 (new AlertDialog.Builder(ViewPage.this))
                         .setTitle("Get New Problem")
                         .setView(dialogView)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                final String chapter = ((EditText) dialogView.findViewById(R.id.chapter_number)).getText().toString();
-                                final String section = ((EditText) dialogView.findViewById(R.id.section_number)).getText().toString();
-                                final String problem = ((EditText) dialogView.findViewById(R.id.problem_number)).getText().toString();
+                                final int chapter = ((NumberPicker) dialogView.findViewById(R.id.chapter_number)).getValue();
+                                final int section = ((NumberPicker) dialogView.findViewById(R.id.section_number)).getValue();
+                                final int problem = ((NumberPicker) dialogView.findViewById(R.id.problem_number)).getValue();
                                 mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
                                 mPagerAdapter.setBookLoc(new TextBookLoc(chapter, section, problem));
                                 mPager.setAdapter(mPagerAdapter);

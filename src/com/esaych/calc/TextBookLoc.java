@@ -7,11 +7,11 @@ import android.widget.Toast;
  */
 public class TextBookLoc {
 
-    private String chpt;
-    private String sect;
-    private String prob;
+    private int chpt;
+    private int sect;
+    private int prob;
 
-    public TextBookLoc(String chapter, String section, String problem) {
+    public TextBookLoc(int chapter, int section, int problem) {
         chpt = chapter;
         sect = section;
         prob = problem;
@@ -19,44 +19,32 @@ public class TextBookLoc {
 
     public TextBookLoc(String parseName) {
         String[] dat = parseName.split(";");
-        chpt = dat[0];
-        sect = dat[1];
-        prob = dat[2];
+        chpt = Integer.parseInt(dat[0]);
+        sect = Integer.parseInt(dat[1]);
+        prob = Integer.parseInt(dat[2]);
     }
 
-    public void setChapter(String chapter) {
-        chpt = chapter;
-    }
-
-    public String getChapter() {
+    public int getChapter() {
         return chpt;
     }
 
-    public void setSection(String section) {
-        sect = section;
-    }
-
-    public String getSection() {
+    public int getSection() {
         return sect;
     }
 
-    public void setProblem(String problem) {
-        prob = problem;
-    }
-
-    public String getProblem() {
+    public int getProblem() {
         return prob;
     }
 
     public TextBookLoc offSet(int amount) {
-        return new TextBookLoc(chpt, sect, (Integer.parseInt(prob)+amount*2)+"");
+        return new TextBookLoc(chpt, sect, (prob+amount*2));
     }
 
     public String getURL(ViewPage viewPage) {
         try {
             String linkChapter = ("00" + chpt);
             linkChapter = linkChapter.substring(linkChapter.length() - 2, linkChapter.length());
-            String linkSection = "abcdefghhijklmnopqrstuvwxyz".charAt(Integer.parseInt(sect) - 1) + "";
+            String linkSection = "abcdefghhijklmnopqrstuvwxyz".charAt(sect - 1) + "";
             String linkProblem = ("000" + prob);
             linkProblem = linkProblem.substring(linkProblem.length() - 3, linkProblem.length());
 
@@ -68,11 +56,11 @@ public class TextBookLoc {
     }
 
     public TextBookLoc getNextProb() {
-        return new TextBookLoc(chpt, sect, (Integer.parseInt(prob)+2)+"");
+        return new TextBookLoc(chpt, sect, (prob+2));
     }
 
     public TextBookLoc getPrevProb() {
-        return new TextBookLoc(chpt, sect, (Integer.parseInt(prob)-2)+"");
+        return new TextBookLoc(chpt, sect, (prob-2));
     }
 
     public String toString() {
@@ -83,9 +71,9 @@ public class TextBookLoc {
         if (!(o instanceof TextBookLoc))
             return false;
         TextBookLoc loc = ((TextBookLoc) o);
-        if (loc.getProblem().equals(prob))
-            if (loc.getSection().equals(sect))
-                if (loc.getChapter().equals(chpt))
+        if (loc.getProblem() == prob)
+            if (loc.getSection() == sect)
+                if (loc.getChapter() == chpt)
                     return true;
         return false;
     }

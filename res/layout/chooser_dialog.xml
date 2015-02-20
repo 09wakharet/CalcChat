@@ -1,7 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
     <!--<ImageView
         android:src="@drawable/header_logo"
         android:layout_width="match_parent"
@@ -11,7 +12,7 @@
         android:contentDescription="@string/app_name" />
         CHANGE SRC TO A NEW DRAWABLE IF YOU WANT A CUSTOM PICTURE ON TOP
         -->
-    <EditText
+    <!--<EditText
         android:id="@+id/chapter_number"
         android:inputType="number"
         android:layout_width="match_parent"
@@ -40,5 +41,18 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="16dp"
-        android:hint="@string/problem"/>
+        android:hint="@string/problem"/>-->
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chapter_number" />
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/section_number" />
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/problem_number" />
 </LinearLayout>

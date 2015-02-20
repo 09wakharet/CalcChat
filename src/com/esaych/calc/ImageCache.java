@@ -59,7 +59,7 @@ public class ImageCache {
 
     private static void clearOldImages(TextBookLoc loc) {
         for (TextBookLoc tempLoc : cacheMap.keySet()) {
-            if (Math.abs(Integer.parseInt(tempLoc.getProblem()) - Integer.parseInt(loc.getProblem())) > 1) {//distance equation - store up to 3 images, one on each side
+            if (Math.abs(tempLoc.getProblem() - loc.getProblem()) > 1) {//distance equation - store up to 3 images, one on each side
                 cacheMap.remove(tempLoc);
                 break;
             }
