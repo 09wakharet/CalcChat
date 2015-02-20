@@ -75,7 +75,8 @@ public class FragmentSlidePage extends Fragment {
     }
 
     public void updateImage(Bitmap image) {
-        ((ImageView)getView().findViewById(R.id.image)).setImageBitmap(image);
+        if (getView() != null) //for rapid flicking of fingers
+            ((ImageView)getView().findViewById(R.id.image)).setImageBitmap(image);
     }
 
     /**

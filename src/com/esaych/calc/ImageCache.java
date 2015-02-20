@@ -59,7 +59,7 @@ public class ImageCache {
 
     private static void clearOldImages(TextBookLoc loc) {
         for (TextBookLoc tempLoc : cacheMap.keySet()) {
-            if (Math.abs(Integer.parseInt(tempLoc.getProblem()) - Integer.parseInt(loc.getProblem())) > 4) {//store up to 5 images, two on each side
+            if (Math.abs(Integer.parseInt(tempLoc.getProblem()) - Integer.parseInt(loc.getProblem())) > 1) {//distance equation - store up to 3 images, one on each side
                 cacheMap.remove(tempLoc);
                 break;
             }
@@ -122,65 +122,65 @@ public class ImageCache {
             int outerX=0;
             int outerY=0;
 
-            loopinY:
-            for (int y = 0; y < img.getHeight(); y+=2) {
-                for (int x = 0; x < img.getWidth(); x+=2) {
-                    int  clr = img.getPixel(x, y);
-                    int  darkness = ((clr & 0x00ff0000) >> 16) + ((clr & 0x0000ff00) >> 8) + (clr & 0x000000ff);
-                    if (darkness < 100) {
-                        innerY = y;
-                        break loopinY;
-                    }
-                }
-            }
+//            loopinY:
+//            for (int y = 0; y < img.getHeight(); y+=2) {
+//                for (int x = 0; x < img.getWidth(); x+=2) {
+//                    int  clr = img.getPixel(x, y);
+//                    int  darkness = ((clr & 0x00ff0000) >> 16) + ((clr & 0x0000ff00) >> 8) + (clr & 0x000000ff);
+//                    if (darkness < 100) {
+//                        innerY = y;
+//                        break loopinY;
+//                    }
+//                }
+//            }
+//
+//            loopinX:
+//            for (int x = 0; x < img.getWidth(); x+=2) {
+//                for (int y = 0; y < img.getHeight(); y+=2) {
+//                    int  clr = img.getPixel(x, y);
+//                    int  darkness = ((clr & 0x00ff0000) >> 16) + ((clr & 0x0000ff00) >> 8) + (clr & 0x000000ff);
+//                    if (darkness < 100) {
+//                        innerX = x;
+//                        break loopinX;
+//                    }
+//                }
+//            }
 
-            loopinX:
-            for (int x = 0; x < img.getWidth(); x+=2) {
-                for (int y = 0; y < img.getHeight(); y+=2) {
-                    int  clr = img.getPixel(x, y);
-                    int  darkness = ((clr & 0x00ff0000) >> 16) + ((clr & 0x0000ff00) >> 8) + (clr & 0x000000ff);
-                    if (darkness < 100) {
-                        innerX = x;
-                        break loopinX;
-                    }
-                }
-            }
-
-            loopoutY:
-            for (int y = img.getHeight()-1; y > 0; y-=2) {
-                for (int x = img.getWidth()-1; x > 0; x-=2) {
-                    int  clr = img.getPixel(x, y);
-                    int  darkness = ((clr & 0x00ff0000) >> 16) + ((clr & 0x0000ff00) >> 8) + (clr & 0x000000ff);
-                    if (darkness < 100) {
-                        outerY = y;
-                        break loopoutY;
-                    }
-                }
-            }
+//            loopoutY:
+//            for (int y = img.getHeight()-1; y > 0; y--) {
+//                for (int x = img.getWidth()-1; x > 0; x--) {
+//                    int  clr = img.getPixel(x, y);
+//                    int  darkness = ((clr & 0x00ff0000) >> 16) + ((clr & 0x0000ff00) >> 8) + (clr & 0x000000ff);
+//                    if (darkness < 750) {
+//                        outerY = y;
+//                        break loopoutY;
+//                    }
+//                }
+//            }
 
             loopoutX:
-            for (int x = img.getWidth()-1; x > 0; x-=2) {
-                for (int y = img.getHeight()-1; y > 0; y-=2) {
+            for (int x = img.getWidth()-1; x > 0; x--) {
+                for (int y = img.getHeight()-1; y > 0; y--) {
                     int  clr = img.getPixel(x, y);
                     int  darkness = ((clr & 0x00ff0000) >> 16) + ((clr & 0x0000ff00) >> 8) + (clr & 0x000000ff);
-                    if (darkness < 100) {
+                    if (darkness < 750) {
                         outerX = x;
                         break loopoutX;
                     }
                 }
             }
             
-            if (innerX > 10)
-                innerX -= 10;
-            if (innerY > 10)
-                innerY -= 10;
+//            if (innerX > 10)
+//                innerX -= 10;
+//            if (innerY > 10)
+//                innerY -= 10;
             if (outerX < img.getWidth()-10)
                 outerX += 10;
-            if (outerY < img.getHeight()-10)
-                outerY += 10;
+//            if (outerY < img.getHeight()-10)
+//                outerY += 10;
 
-            img = Bitmap.createBitmap(img, innerX, innerY, outerX, outerY);
-
+            //CROP AND SCALE
+            img = Bitmap.createBitmap(img, 10, 10, outerX-10, img.getHeight()-10);
 
             Point size = new Point();
             FragmentSlidePage.viewPage.getWindowManager().getDefaultDisplay().getSize(size);
