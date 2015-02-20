@@ -2,7 +2,7 @@
     android:orientation="horizontal"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center">
+    android:gravity="center">
     <!--<ImageView
         android:src="@drawable/header_logo"
         android:layout_width="match_parent"

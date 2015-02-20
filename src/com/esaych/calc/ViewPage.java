@@ -36,21 +36,21 @@ public class ViewPage extends FragmentActivity {
 
                 final View dialogView = getLayoutInflater().inflate(R.layout.chooser_dialog, null);
 
-                NumberPicker chptNP = (NumberPicker) findViewById(R.id.chapter_number);
-                chptNP.setMaxValue(999);
-                chptNP.setMinValue(0);
+                NumberPicker chptNP = (NumberPicker) dialogView.findViewById(R.id.chapter_number);
+                chptNP.setMaxValue(199);
+                chptNP.setMinValue(1);
                 chptNP.setWrapSelectorWheel(false);
 
-                NumberPicker sectNP = (NumberPicker) findViewById(R.id.section_number);
-                sectNP.setMaxValue(999);
-                sectNP.setMinValue(0);
+                NumberPicker sectNP = (NumberPicker) dialogView.findViewById(R.id.section_number);
+                sectNP.setMaxValue(199);
+                sectNP.setMinValue(1);
                 sectNP.setWrapSelectorWheel(false);
 
-                NumberPicker probNP = (NumberPicker) findViewById(R.id.section_number);
+                NumberPicker probNP = (NumberPicker) dialogView.findViewById(R.id.problem_number);
 
-                String[] values=new String[10];
-                for(int i = 1 ; i < values.length ; i++) {
-                    values[i] = Integer.toString(i*2);
+                String[] values = new String[100];
+                for(int i = 0 ; i < values.length ; i++) {
+                    values[i] = Integer.toString(i*2+1);
                 }
                 probNP.setMaxValue(values.length-1);
                 probNP.setMinValue(0);
@@ -64,7 +64,7 @@ public class ViewPage extends FragmentActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 final int chapter = ((NumberPicker) dialogView.findViewById(R.id.chapter_number)).getValue();
                                 final int section = ((NumberPicker) dialogView.findViewById(R.id.section_number)).getValue();
-                                final int problem = ((NumberPicker) dialogView.findViewById(R.id.problem_number)).getValue();
+                                final int problem = ((NumberPicker) dialogView.findViewById(R.id.problem_number)).getValue()*2+1; //this is necessary because we gave the picker returns indexes the values.
                                 mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
                                 mPagerAdapter.setBookLoc(new TextBookLoc(chapter, section, problem));
                                 mPager.setAdapter(mPagerAdapter);
