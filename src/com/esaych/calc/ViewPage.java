@@ -17,7 +17,7 @@ import android.widget.NumberPicker;
 
 public class ViewPage extends FragmentActivity {
 
-    private static int NUM_PAGES = -3;
+    private static int NUM_PAGES = 10;
     private ViewPager mPager;
     private ScreenSlidePagerAdapter mPagerAdapter;
 

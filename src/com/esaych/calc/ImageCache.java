@@ -96,7 +96,7 @@ public class ImageCache {
             Bitmap download = null;
             try {
                 InputStream in = new java.net.URL(urldisplay).openStream();
-                download = BitmapFactory.decodeStream(in);
+                download = cropImage(BitmapFactory.decodeStream(in));
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
                 error = e.getMessage();
@@ -111,10 +111,9 @@ public class ImageCache {
                 Toast.makeText(FragmentSlidePage.viewPage, "No internet connectivity", Toast.LENGTH_LONG).show();
             if (!error.equals(""))
                 Toast.makeText(FragmentSlidePage.viewPage, error, Toast.LENGTH_LONG).show();
-            Bitmap bitmap = cropImage(result);
-            ImageCache.addBitmapToMemoryCache(bookLoc, bitmap);
+            ImageCache.addBitmapToMemoryCache(bookLoc, result);
             if (fragment != null) {
-                fragment.updateImage(bitmap);
+                fragment.updateImage(result);
             }
         }
 
