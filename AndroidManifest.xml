@@ -15,7 +15,8 @@
         android:label="@string/app_name" >
         <activity
             android:name=".ViewPage"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@style/bright" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
