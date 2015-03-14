@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentActivity;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
+
+import java.lang.reflect.Field;
 
 public class ViewPage extends FragmentActivity {
 
@@ -59,6 +62,7 @@ public class ViewPage extends FragmentActivity {
 
                 (new AlertDialog.Builder(ViewPage.this))
                         .setView(dialogView)
+                        .setInverseBackgroundForced(true)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 final int chapter = ((NumberPicker) dialogView.findViewById(R.id.chapter_number)).getValue();

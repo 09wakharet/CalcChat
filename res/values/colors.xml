@@ -5,5 +5,6 @@
     <color name="primary_dark">#3965AA </color>
     <color name="background">#E8F1FF </color>
     <color name="title">#EEEEEE</color>
+    <color name="text">#111111</color>
 
 </resources>
