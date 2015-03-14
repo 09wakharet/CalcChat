@@ -4,5 +4,6 @@
     <string name="chapter">Chapter</string>
     <string name="section">Section</string>
     <string name="problem">Problem</string>
+    <string name="pref_store">com.esaych.calc.TEXTBOOKLOCATION</string>
     
 </resources>

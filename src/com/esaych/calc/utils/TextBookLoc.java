@@ -1,6 +1,7 @@
-package com.esaych.calc;
+package com.esaych.calc.utils;
 
-import android.widget.Toast;
+import com.esaych.calc.activities.ViewPage;
+
 /**
  * Created by Samuel Holmberg on 2/17/2015.
  * This class is designed to be the basic location object of problems in the text book based on chapter, section and problem

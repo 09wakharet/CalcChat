@@ -1,4 +1,4 @@
-package com.esaych.calc;
+package com.esaych.calc.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.esaych.calc.activities.fragments.FragmentSlidePage;
+import com.esaych.calc.R;
 
 import java.io.InputStream;
 

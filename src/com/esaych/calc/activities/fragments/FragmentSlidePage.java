@@ -1,21 +1,19 @@
-package com.esaych.calc;
+package com.esaych.calc.activities.fragments;
 
 import android.app.Fragment;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Point;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.InputStream;
-import java.util.ArrayList;
+import com.esaych.calc.R;
+import com.esaych.calc.activities.ViewPage;
+import com.esaych.calc.utils.ImageCache;
+import com.esaych.calc.utils.TextBookLoc;
+
 import java.util.HashMap;
 import java.util.Map;
 
