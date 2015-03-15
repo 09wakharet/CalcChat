@@ -23,7 +23,7 @@ import com.esaych.calc.utils.TextBookLoc;
 
 public class ViewPage extends FragmentActivity {
 
-    private static int NUM_PAGES = 10;
+    private static int NUM_PAGES = 100;
     private ViewPager mPager;
     private ScreenSlidePagerAdapter mPagerAdapter;
 
@@ -35,8 +35,13 @@ public class ViewPage extends FragmentActivity {
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        mPagerAdapter.setBookLoc(new TextBookLoc(sharedPref.getString(getString(R.string.pref_store), "0;0;0")));
+
+        TextBookLoc storedLoc = new TextBookLoc(sharedPref.getString(getString(R.string.pref_store), "0;0;0"));
+        int position = storedLoc.getProblem()/2;
+        storedLoc.setProblem(1);
+        mPagerAdapter.setBookLoc(storedLoc);
         mPager.setAdapter(mPagerAdapter);
+        mPager.setCurrentItem(position);
 
 
         // search glass listener
@@ -76,10 +81,11 @@ public class ViewPage extends FragmentActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 final int chapter = ((NumberPicker) dialogView.findViewById(R.id.chapter_number)).getValue();
                                 final int section = ((NumberPicker) dialogView.findViewById(R.id.section_number)).getValue();
-                                final int problem = ((NumberPicker) dialogView.findViewById(R.id.problem_number)).getValue() * 2 + 1; //this is necessary because we gave the picker returns indexes the values.
+                                final int problem = ((NumberPicker) dialogView.findViewById(R.id.problem_number)).getValue(); //this is necessary because we gave the picker returns indexes the values.
                                 mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
-                                mPagerAdapter.setBookLoc(new TextBookLoc(chapter, section, problem));
+                                mPagerAdapter.setBookLoc(new TextBookLoc(chapter, section, 1));
                                 mPager.setAdapter(mPagerAdapter);
+                                mPager.setCurrentItem(problem);
                                 ImageCache.resetCache();
                             }
                         })
@@ -119,7 +125,7 @@ public class ViewPage extends FragmentActivity {
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
-        private TextBookLoc baseLoc = new TextBookLoc("0;0;0");
+        private TextBookLoc baseLoc;
 
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);

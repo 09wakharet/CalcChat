@@ -37,11 +37,19 @@ public class TextBookLoc {
         return prob;
     }
 
+    public void setProblem(int problem) {
+        prob = problem;
+    }
+
     public TextBookLoc offSet(int amount) {
         return new TextBookLoc(chpt, sect, (prob+amount*2));
     }
 
     public String getURL(ViewPage viewPage) {
+        System.out.print("DOWNLOADING: " + this.toString());
+        for (int i = 0; i < this.getProblem(); i++)
+            System.out.print(" ");
+        System.out.println("|");
         try {
             String linkChapter = ("00" + chpt);
             linkChapter = linkChapter.substring(linkChapter.length() - 2, linkChapter.length());
@@ -66,17 +74,6 @@ public class TextBookLoc {
 
     public String toString() {
         return chpt + ";" + sect + ";" + prob;
-    }
-
-    public boolean equals(Object o) {
-        if (!(o instanceof TextBookLoc))
-            return false;
-        TextBookLoc loc = ((TextBookLoc) o);
-        if (loc.getProblem() == prob)
-            if (loc.getSection() == sect)
-                if (loc.getChapter() == chpt)
-                    return true;
-        return false;
     }
 
 }

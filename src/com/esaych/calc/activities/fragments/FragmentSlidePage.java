@@ -61,7 +61,7 @@ public class FragmentSlidePage extends Fragment {
 
         //Populate the FragmentView
         ((ImageView) rootView.findViewById(R.id.image)).setImageBitmap(ImageCache.getImage(mBookLoc, this, rootView));
-        ((TextView) rootView.findViewById(R.id.question_text)).setText("Chapter: " + mBookLoc.getChapter() + "\nSection: " + mBookLoc.getSection() + "\nProblem: " +mBookLoc.getProblem());
+        ((TextView) rootView.findViewById(R.id.question_text)).setText("Section " + mBookLoc.getChapter() + "." + mBookLoc.getSection() + " Problem #" +mBookLoc.getProblem());
 
         return rootView;
     }

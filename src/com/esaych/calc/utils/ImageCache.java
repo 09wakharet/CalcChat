@@ -21,15 +21,15 @@ import java.io.InputStream;
  * Also this loads the previous and next images before scroll is complete, this allows for faster, easier scrolling.
  */
 public class ImageCache {
-    private static LruCache<TextBookLoc, Bitmap> imageCache;
+    private static LruCache<String, Bitmap> imageCache;
 
     public static void initCache() {
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         final int cacheSize = maxMemory / 4;
 
-        imageCache = new LruCache<TextBookLoc, Bitmap>(cacheSize) {
+        imageCache = new LruCache<String, Bitmap>(cacheSize) {
             @Override
-            protected int sizeOf(TextBookLoc key, Bitmap bitmap) {
+            protected int sizeOf(String key, Bitmap bitmap) {
                 // The cache size will be measured in kb - not # of items
                 return bitmap.getByteCount() / 1024;
             }
@@ -37,8 +37,8 @@ public class ImageCache {
     }
 
     public static void addBitmapToMemoryCache(TextBookLoc key, Bitmap bitmap) {
-        if (imageCache.get(key) == null) {
-            imageCache.put(key, bitmap);
+        if (imageCache.get(key.toString()) == null) {
+            imageCache.put(key.toString(), bitmap);
         }
     }
     
@@ -49,10 +49,10 @@ public class ImageCache {
      * @return
      */
     public static Bitmap getImage(TextBookLoc bookLoc, FragmentSlidePage fragment, ViewGroup rootView) {
-        if (imageCache.get(bookLoc) != null) {
+        if (imageCache.get(bookLoc.toString()) != null) {
             stockCacheImages(bookLoc, null);
-            rootView.findViewById(R.id.progress_bar).setVisibility(View.GONE); //TODO: Make progress spinner work properly
-            return imageCache.get(bookLoc);
+            rootView.findViewById(R.id.progress_bar).setVisibility(View.GONE);
+            return imageCache.get(bookLoc.toString());
         } else {
             stockCacheImages(bookLoc, fragment);
             rootView.findViewById(R.id.progress_bar).setVisibility(View.VISIBLE);
@@ -69,12 +69,13 @@ public class ImageCache {
      * @param bookLoc
      */
     private static void stockCacheImages(TextBookLoc bookLoc, FragmentSlidePage fragment) {
-        if (imageCache.get(bookLoc) == null)
+        if (imageCache.get(bookLoc.toString()) == null)
             urlImage(bookLoc, fragment);
-        if (imageCache.get(bookLoc.getNextProb()) == null)
+        if (imageCache.get(bookLoc.getNextProb().toString()) == null)
             urlImage(bookLoc.getNextProb(), null);
-        if (imageCache.get(bookLoc.getPrevProb()) == null)
+        if (imageCache.get(bookLoc.getPrevProb().toString()) == null)
             urlImage(bookLoc.getPrevProb(), null);
+        System.out.println("DOWNLOADING imageCache Size: " + imageCache.snapshot().keySet().toString());
     }
 
     private static void urlImage(TextBookLoc bookLoc, FragmentSlidePage fragment) {
@@ -112,8 +113,10 @@ public class ImageCache {
         protected void onPostExecute(Bitmap result) {
             if (error.contains("connect"))
                 Toast.makeText(FragmentSlidePage.viewPage, "No internet connectivity", Toast.LENGTH_LONG).show();
-            if (!error.equals(""))
-                Toast.makeText(FragmentSlidePage.viewPage, error, Toast.LENGTH_LONG).show();
+            if (!error.equals("")) {
+                System.out.println("NONFATAL ERROR: " + error);
+                Toast.makeText(FragmentSlidePage.viewPage, "Network Error, see console", Toast.LENGTH_LONG).show();
+            }
             ImageCache.addBitmapToMemoryCache(bookLoc, result);
             if (fragment != null) {
                 fragment.updateImage(result);
