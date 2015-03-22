@@ -1,9 +1,12 @@
 <component name="libraryTable">
   <library name="android-support-v13">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libs/android-support-v13.jar!/" />
+      <root url="jar://$USER_HOME$/AppData/Local/Android/sdk/extras/android/support/v13/android-support-v13.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
+    <excluded>
+      <root url="jar://$USER_HOME$/AppData/Local/Android/sdk/extras/android/support/v13/android-support-v13.jar!/android/support/annotation" />
+    </excluded>
   </library>
 </component>

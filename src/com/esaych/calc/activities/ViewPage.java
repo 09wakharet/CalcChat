@@ -146,7 +146,7 @@ public class ViewPage extends FragmentActivity {
 
         @Override
         public int getCount() {
-            return NUM_PAGES++;
+            return NUM_PAGES;
         }
     }
 }

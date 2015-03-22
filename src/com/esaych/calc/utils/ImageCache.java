@@ -43,12 +43,16 @@ public class ImageCache {
     }
     
     /**
-     * Gets the image for the book location - will return doge if not cached yet
+     * Gets the image for the book location - will return doge if not cached yet, or a negative problem number
      * @param bookLoc
      * @param fragment
      * @return
      */
     public static Bitmap getImage(TextBookLoc bookLoc, FragmentSlidePage fragment, ViewGroup rootView) {
+
+        if (bookLoc.getProblem() < 0)
+            return BitmapFactory.decodeResource(FragmentSlidePage.viewPage.getResources(), R.drawable.doge);
+
         if (imageCache.get(bookLoc.toString()) != null) {
             stockCacheImages(bookLoc, null);
             rootView.findViewById(R.id.progress_bar).setVisibility(View.GONE);
@@ -112,10 +116,10 @@ public class ImageCache {
 
         protected void onPostExecute(Bitmap result) {
             if (error.contains("connect"))
-                Toast.makeText(FragmentSlidePage.viewPage, "No internet connectivity", Toast.LENGTH_LONG).show();
+                Toast.makeText(FragmentSlidePage.viewPage, "Internet Required", Toast.LENGTH_LONG).show();
             if (!error.equals("")) {
                 System.out.println("NONFATAL ERROR: " + error);
-                Toast.makeText(FragmentSlidePage.viewPage, "Network Error, see console", Toast.LENGTH_LONG).show();
+                Toast.makeText(FragmentSlidePage.viewPage, "You have reached the last question of the section", Toast.LENGTH_LONG).show();
             }
             ImageCache.addBitmapToMemoryCache(bookLoc, result);
             if (fragment != null) {
@@ -130,46 +134,7 @@ public class ImageCache {
          */
         protected Bitmap cropImage(Bitmap img) {
 
-            int innerX=0;
-            int innerY=0;
             int outerX=0;
-            int outerY=0;
-
-//            loopinY:
-//            for (int y = 0; y < img.getHeight(); y+=2) {
-//                for (int x = 0; x < img.getWidth(); x+=2) {
-//                    int  clr = img.getPixel(x, y);
-//                    int  darkness = ((clr & 0x00ff0000) >> 16) + ((clr & 0x0000ff00) >> 8) + (clr & 0x000000ff);
-//                    if (darkness < 100) {
-//                        innerY = y;
-//                        break loopinY;
-//                    }
-//                }
-//            }
-//
-//            loopinX:
-//            for (int x = 0; x < img.getWidth(); x+=2) {
-//                for (int y = 0; y < img.getHeight(); y+=2) {
-//                    int  clr = img.getPixel(x, y);
-//                    int  darkness = ((clr & 0x00ff0000) >> 16) + ((clr & 0x0000ff00) >> 8) + (clr & 0x000000ff);
-//                    if (darkness < 100) {
-//                        innerX = x;
-//                        break loopinX;
-//                    }
-//                }
-//            }
-
-//            loopoutY:
-//            for (int y = img.getHeight()-1; y > 0; y--) {
-//                for (int x = img.getWidth()-1; x > 0; x--) {
-//                    int  clr = img.getPixel(x, y);
-//                    int  darkness = ((clr & 0x00ff0000) >> 16) + ((clr & 0x0000ff00) >> 8) + (clr & 0x000000ff);
-//                    if (darkness < 750) {
-//                        outerY = y;
-//                        break loopoutY;
-//                    }
-//                }
-//            }
 
             loopoutX:
             for (int x = img.getWidth()-1; x > 0; x--) {
@@ -182,15 +147,9 @@ public class ImageCache {
                     }
                 }
             }
-            
-//            if (innerX > 10)
-//                innerX -= 10;
-//            if (innerY > 10)
-//                innerY -= 10;
+
             if (outerX < img.getWidth()-10)
                 outerX += 10;
-//            if (outerY < img.getHeight()-10)
-//                outerY += 10;
 
             //CROP AND SCALE
             img = Bitmap.createBitmap(img, 10, 10, outerX-10, img.getHeight()-10);
