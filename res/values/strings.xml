@@ -5,5 +5,17 @@
     <string name="section">Section</string>
     <string name="problem">Problem</string>
     <string name="pref_store">com.esaych.calc.TEXTBOOKLOCATION</string>
+    <string name="book_prompt">Which textbook are you using</string>
+    
+    <string-array name="book_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
     
 </resources>

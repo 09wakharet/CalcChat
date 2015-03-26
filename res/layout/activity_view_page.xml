@@ -9,16 +9,16 @@
         android:layout_height="wrap_content" />
 
     <ImageView
-        android:id="@+id/search"
+        android:id="@+id/book"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
-		android:layout_toLeftOf="@+id/book"
+		android:layout_toLeftOf="@+id/search"
         android:layout_gravity="right"
         android:src="@drawable/book_icon" />=
 
     <ImageView
-        android:id="@id/book"
+        android:id="@id/search"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"

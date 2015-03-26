@@ -43,6 +43,19 @@ public class ViewPage extends FragmentActivity {
         mPager.setAdapter(mPagerAdapter);
         mPager.setCurrentItem(position);
 
+        ((ImageView)findViewById(R.id.book)).setOnClickListener(new View.OnClickListener() {
+        	
+        	public void onClick(View v){
+                final View dropdown = getLayoutInflater().inflate(R.layout.textbook_chooser, null);
+                Spinner spinner = (Spinner) findViewById(R.id.textbook_dropdown);
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                     R.array.book_array, android.R.layout.simple_spinner_item);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner.setAdapter(adapter);
+
+                //Spinner code is all broken right now! :)
+        	}
+        });
 
         // search glass listener
         ((ImageView)findViewById(R.id.search)).setOnClickListener(new View.OnClickListener() {
