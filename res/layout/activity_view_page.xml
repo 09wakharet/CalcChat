@@ -15,7 +15,7 @@
         android:layout_alignParentBottom="true"
 		android:layout_toLeftOf="@+id/book"
         android:layout_gravity="right"
-        android:src="@drawable/ic_action_search" /><!--reset icon to book thingy--!>
+        android:src="@drawable/book_icon" />=
 
     <ImageView
         android:id="@id/book"
